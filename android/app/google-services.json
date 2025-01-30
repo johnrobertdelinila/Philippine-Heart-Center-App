@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "196487528123",
+    "project_id": "phcapp-525c3",
+    "storage_bucket": "phcapp-525c3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196487528123:android:a5e2b7a613d597ff22739e",
+        "android_client_info": {
+          "package_name": "com.example.hospitalapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196487528123-5kd08r9sodeihmm9n9i3044v92akp2v0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX_SCjnP4abTH_Va2jnjpUYVYYnzr2MKU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196487528123-5kd08r9sodeihmm9n9i3044v92akp2v0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "196487528123-befqhco6c7p1bo9e6jtk9kn3qkb7ec9i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.hospitalapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
