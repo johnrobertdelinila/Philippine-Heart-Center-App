@@ -50,10 +50,21 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<!-- Replace with your reversed client ID from GoogleService-Info.plist -->
 				<string>com.googleusercontent.apps.196487528123-qf7vvfl188h4hsvgaft442chj0kfls6c</string>
+				<string>fb611385561603887</string>
 			</array>
 		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>611385561603887</string>
+	<key>FacebookClientToken</key>
+	<string>c35c49b1b7e2e2a6f6c6b4f0c3e3a8b1</string>
+	<key>FacebookDisplayName</key>
+	<string>PHCApp</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
 	</array>
 </dict>
 </plist>

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,7 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  bool _isLoading = false;
+  bool _isLoadingGoogle = false;
+  bool _isLoadingFacebook = false;
 
   @override
   void dispose() {
@@ -28,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _handleGoogleSignIn() async {
     try {
       setState(() {
-        _isLoading = true;
+        _isLoadingGoogle = true;
       });
 
       // Trigger the Google Sign In process
@@ -72,7 +74,61 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } finally {
       setState(() {
-        _isLoading = false;
+        _isLoadingGoogle = false;
+      });
+    }
+  }
+
+  Future<void> _handleFacebookSignIn() async {
+    try {
+      setState(() {
+        _isLoadingFacebook = true;
+      });
+
+      // Trigger the sign-in flow
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+
+      if (loginResult.status == LoginStatus.success) {
+        // Create a credential from the access token
+        final OAuthCredential credential = FacebookAuthProvider.credential(
+          loginResult.accessToken!.token,
+        );
+
+        // Sign in to Firebase with the Facebook credential
+        final UserCredential userCredential =
+            await _auth.signInWithCredential(credential);
+
+        if (userCredential.user != null) {
+          // Successfully signed in, navigate to home screen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
+        }
+      } else if (loginResult.status == LoginStatus.cancelled) {
+        // User cancelled the login flow
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Sign in cancelled'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      } else {
+        throw Exception(loginResult.message);
+      }
+    } catch (e) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Facebook sign in failed: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoadingFacebook = false;
       });
     }
   }
@@ -215,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 _buildSocialButton('G', _handleGoogleSignIn),
                 const SizedBox(width: 20),
-                _buildSocialButton('f', () {}),
+                _buildSocialButton('f', _handleFacebookSignIn),
                 const SizedBox(width: 20),
                 _buildSocialButton('', () {}, icon: Icons.apple),
               ],
@@ -247,6 +303,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildSocialButton(String label, VoidCallback onPressed,
       {IconData? icon}) {
+    bool isLoading = false;
+    if (label == 'G') {
+      isLoading = _isLoadingGoogle;
+    } else if (label == 'f') {
+      isLoading = _isLoadingFacebook;
+    }
+
     return Container(
       width: 50,
       height: 50,
@@ -255,8 +318,18 @@ class _LoginScreenState extends State<LoginScreen> {
         shape: BoxShape.circle,
       ),
       child: IconButton(
-        onPressed: label == 'G' ? _handleGoogleSignIn : onPressed,
-        icon: _isLoading && label == 'G'
+        onPressed: isLoading
+            ? null
+            : () {
+                if (label == 'G') {
+                  _handleGoogleSignIn();
+                } else if (label == 'f') {
+                  _handleFacebookSignIn();
+                } else {
+                  onPressed();
+                }
+              },
+        icon: isLoading
             ? const SizedBox(
                 width: 20,
                 height: 20,
