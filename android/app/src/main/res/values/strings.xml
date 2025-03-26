@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="facebook_app_id">611385561603887</string>
+    <string name="app_name">PHC App</string>
     <string name="fb_login_protocol_scheme">fb611385561603887</string>
     <string name="facebook_client_token">611385561603887|5521b10ac28c3099e309f453973eb4d3</string>
 </resources>
