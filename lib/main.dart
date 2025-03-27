@@ -40,7 +40,23 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFDC1B22)),
         useMaterial3: true,
       ),
-      home: const SplashScreen(), // Set SplashScreen as the initial screen
+      home: FutureBuilder(
+        // Add this FutureBuilder to handle initialization
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Error initializing Firebase'),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const SplashScreen();  // Your initial screen
+          }
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      ),
     );
   }
 }
