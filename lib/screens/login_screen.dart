@@ -298,7 +298,21 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  // Add login logic
+                  if (_isPhoneLogin) {
+                    // Validate phone number input
+                    if (_phoneController.text.trim().isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please enter a phone number'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
+                    // Add phone authentication logic here
+                  } else {
+                    // Existing email login logic
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFDC1B22),
